@@ -43,21 +43,24 @@ public:
 
     }
     //using a Breadth First Search:
-    void BFS(int start){
+    vector<int> BFS(int start){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited (SIZE, false); 
         queue<int> q;
+        vector<int> order; // keeps track of visit order
 
         visited[start] = true;
         q.push(start);
 
-        cout << "BFS starting from vertex " << start << ":\n";
+        if(debug){
+        cout << "BFS processing...\n";
+        }
 
         //using a while loop to traverse through all the nodes:
         while (!q.empty()) {
             int v = q.front();
             q.pop();
-            cout << v << " ";
+            order.push_back(v); //record visit
 
             // Sort neighbors by vertex ID to ensure consistent order:
             vector<int> neighbors;
@@ -74,19 +77,22 @@ public:
                 }
             }
         }
-        cout << endl;
+        return order;
 
     }
 
     //Using a Depth-First Search:
-    void DFS(int start){
+    vector<int> DFS(int start){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited(SIZE, false);
         stack<int> st;
+        vector<int> order;// keeps track of visit order
 
         st.push(start);
 
-        cout << "DFS starting from vertex " << start << ":\n";
+        if(debug){
+        cout << "DFS processing...\n";
+        }
 
         //using a while loop to traverse through all the nodes:
         while(!st.empty()){
@@ -97,7 +103,7 @@ public:
             //Sort neighbors by vertex ID to ensure consistent order:
             if(!visited[v]){
                 visited[v] = true;
-                cout << v << " ";
+                order.push_back(v); //record visit
 
                 //Sort neighbors in reverse order so smallest comes out first:
                 vector<int> neighbors;
@@ -106,14 +112,15 @@ public:
                 }
                 sort(neighbors.begin(), neighbors.end(), greater<int>());
 
-                for(int dest : neighbors){
+                for(int i = neighbors.size() - 1; i >= 0; i--){
+                    int dest = neighbors[i];
                     if(!visited[dest]){
                         st.push(dest);
                     }
                 }
             }
         }
-        cout << endl;
+        return order;
     }
 
     // Print the graph's adjacency list
@@ -142,10 +149,21 @@ int main() {
     graph.printGraph();
 
     //Print DFS from node 0:
-    graph.DFS(0);
+    vector<int>dfsOrder = graph.BFS(0);
+    cout << "DFS starting from vertex 0:\n";
+    for(int v : dfsOrder) {
+        cout << v << " ";
+    }
+    cout << endl;
 
     //Print BFS from node 0:
-    graph.BFS(0);
+    vector<int>bfsOrder = graph.BFS(0);
+    cout << "BFS starting from vertex 0:\n";
+    for(int v : bfsOrder) {
+        cout << v << " ";
+    }
+    cout << endl;
+    
 
     
 
