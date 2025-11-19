@@ -110,8 +110,9 @@ public:
                 for(auto &neighbor: adjList[v]){
                     neighbors.push_back(neighbor.first);
                 }
-                sort(neighbors.begin(), neighbors.end(), greater<int>());
+                sort(neighbors.begin(), neighbors.end()); //ascending order
 
+                //push in reverse order:
                 for(int i = neighbors.size() - 1; i >= 0; i--){
                     int dest = neighbors[i];
                     if(!visited[dest]){
@@ -149,7 +150,7 @@ int main() {
     graph.printGraph();
 
     //Print DFS from node 0:
-    vector<int>dfsOrder = graph.BFS(0);
+    vector<int>dfsOrder = graph.DFS(0);
     cout << "DFS starting from vertex 0:\n";
     for(int v : dfsOrder) {
         cout << v << " ";
