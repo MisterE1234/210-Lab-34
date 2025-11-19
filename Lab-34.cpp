@@ -42,8 +42,17 @@ public:
 
 
     }
+
+    //A helper:
+    bool isOriginalEdge(int u, int v, const vector<Edge>& edges) {
+    for (auto& e : edges)
+        if (e.src == u && e.dest == v)
+            return true;
+    return false;
+}
+
     //using a Breadth First Search:
-    vector<int> BFS(int start){
+    vector<int> BFS(int start, const vector<Edge>& edges){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited (SIZE, false); 
         queue<int> q;
@@ -70,7 +79,7 @@ public:
             sort(neighbors.begin(), neighbors.end());
 
             //checking each neighbor node if they have been visted and adding them to q:
-            for (int dest :  neighbors){
+            for (int dest : neighbors){
                 if (!visited[dest]){ //if the node at dest has not been visited:
                     visited[dest] = true;
                     q.push(dest);
@@ -134,6 +143,8 @@ public:
                 cout << endl;
         }
     }
+
+    
 };
 
 int main() {
