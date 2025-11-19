@@ -44,7 +44,7 @@ public:
     }
     //using a Breadth First Search:
     void BFS(int start){
-        //creating a vector to keep track of which nodes have al;ready been visted:
+        //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited (SIZE, false); 
         queue<int> q;
 
@@ -79,27 +79,41 @@ public:
     }
 
     //Using a Depth-First Search:
-    void DFS_stack(int start){
+    void DFS(int start){
+        //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited(SIZE, false);
         stack<int> st;
 
         st.push(start);
 
-        cout << "DFS starting from vertex" << start << ":\n";
+        cout << "DFS starting from vertex " << start << ":\n";
 
+        //using a while loop to traverse through all the nodes:
         while(!st.empty()){
 
             int v = st.top();
             st.pop();
 
+            // Sort neighbors by vertex ID to ensure consistent order:
             if(!visited[v]){
                 visited[v] = true;
                 cout << v << " ";
 
-                //Sort
+                //Sort neighbors in reverse order so smallest comes out first:
+                vector<int> neighbors;
+                for(auto &neighbor: adjList[v]){
+                    neighbors.push_back(neighbor.first);
+                }
+                sort(neighbors.begin(), neighbors.end(), greater<int>());
 
+                for(int dest : neighbors){
+                    if(!visited[dest]){
+                        st.push(dest);
+                    }
+                }
             }
         }
+        cout << endl;
     }
 
     // Print the graph's adjacency list
@@ -126,6 +140,12 @@ int main() {
 
     // Prints adjacency list representation of graph
     graph.printGraph();
+
+    //Print DFS from node 0:
+    graph.DFS(0);
+
+    //Print BFS from node 0:
+    graph.BFS(0);
 
     
 
