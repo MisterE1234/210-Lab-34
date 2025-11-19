@@ -48,15 +48,15 @@ public:
     }
 
     //A helper:
-    bool isOriginalEdge(int u, int v, const vector<Edge>& edges) {
-    for (auto& e : edges)
+    bool isOriginalEdge(int u, int v) {
+    for (auto& e : originalEdges)
         if (e.src == u && e.dest == v)
             return true;
     return false;
 }
 
     //using a Breadth First Search:
-    vector<int> BFS(int start, const vector<Edge>& edges){
+    vector<int> BFS(int start){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited (SIZE, false); 
         queue<int> q;
@@ -78,10 +78,7 @@ public:
             // Sort neighbors by vertex ID to ensure consistent order:
             vector<int> neighbors;
             for(auto& p : adjList[v]){
-                int dest = p.first;
-                if (isOriginalEdge(v, dest, edges)){
-                    neighbors.push_back(dest);
-                }
+                neighbors.push_back(p.first);
             }
             sort(neighbors.begin(), neighbors.end());
 
@@ -98,7 +95,7 @@ public:
     }
 
     //Using a Depth-First Search:
-    vector<int> DFS(int start, const vector<Edge>& edges){
+    vector<int> DFS(int start){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited(SIZE, false);
         stack<int> st;
@@ -124,16 +121,16 @@ public:
                 //Sort neighbors in reverse order so smallest comes out first:
                 vector<int> neighbors;
                 for(auto& p: adjList[v]){
-                    int dest = p.first;
-                    if(isOriginalEdge(v, dest, edges)){
-                        neighbors.push_back(dest);
-                    }
+                    neighbors.push_back(p.first);
                 }
+            }
                 sort(neighbors.begin(), neighbors.end()); //ascending order
 
                 //push in reverse order:
                 for(int i = neighbors.size() - 1; i >= 0; i--){
-                    st.push(neighbors[i]);
+                    if(!visited[neighbors[i]]){
+                        st.push(neighbors[i]);
+                    }
                     }
                 }
             }
@@ -169,7 +166,7 @@ int main() {
     graph.printGraph();
 
     //Print DFS from node 0:
-    vector<int>dfsOrder = graph.DFS(0, edges);
+    vector<int>dfsOrder = graph.DFS(0);
     cout << "DFS starting from vertex 0:\n";
     for(int v : dfsOrder) {
         cout << v << " ";
@@ -177,7 +174,7 @@ int main() {
     cout << endl;
 
     //Print BFS from node 0:
-    vector<int>bfsOrder = graph.BFS(0, edges);
+    vector<int>bfsOrder = graph.BFS(0);
     cout << "BFS starting from vertex 0:\n";
     for(int v : bfsOrder) {
         cout << v << " ";
