@@ -73,8 +73,11 @@ public:
 
             // Sort neighbors by vertex ID to ensure consistent order:
             vector<int> neighbors;
-            for(auto &neighbor : adjList[v]){
-                neighbors.push_back(neighbor.first);
+            for(auto& p : adjList[v]){
+                int dest = p.first;
+                if (isOriginalEdge(v, dest, edges)){
+                    neighbors.push_back(dest);
+                }
             }
             sort(neighbors.begin(), neighbors.end());
 
@@ -91,7 +94,7 @@ public:
     }
 
     //Using a Depth-First Search:
-    vector<int> DFS(int start){
+    vector<int> DFS(int start, const vector<Edge>& edges){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited(SIZE, false);
         stack<int> st;
@@ -116,20 +119,21 @@ public:
 
                 //Sort neighbors in reverse order so smallest comes out first:
                 vector<int> neighbors;
-                for(auto &neighbor: adjList[v]){
-                    neighbors.push_back(neighbor.first);
+                for(auto& p: adjList[v]){
+                    int dest = p.first;
+                    if(isOriginalEdge(v, dest, edges)){
+                        neighbors.push_back(dest);
+                    }
                 }
                 sort(neighbors.begin(), neighbors.end()); //ascending order
 
                 //push in reverse order:
                 for(int i = neighbors.size() - 1; i >= 0; i--){
-                    int dest = neighbors[i];
-                    if(!visited[dest]){
-                        st.push(dest);
+                    st.push(neighbors[i]);
                     }
                 }
             }
-        }
+        
         return order;
     }
 
@@ -161,7 +165,7 @@ int main() {
     graph.printGraph();
 
     //Print DFS from node 0:
-    vector<int>dfsOrder = graph.DFS(0);
+    vector<int>dfsOrder = graph.DFS(0, edges);
     cout << "DFS starting from vertex 0:\n";
     for(int v : dfsOrder) {
         cout << v << " ";
@@ -169,7 +173,7 @@ int main() {
     cout << endl;
 
     //Print BFS from node 0:
-    vector<int>bfsOrder = graph.BFS(0);
+    vector<int>bfsOrder = graph.BFS(0, edges);
     cout << "BFS starting from vertex 0:\n";
     for(int v : bfsOrder) {
         cout << v << " ";
