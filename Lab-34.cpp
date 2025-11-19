@@ -5,6 +5,8 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <utility>
+#include <stack>
 using namespace std;
 
 const int SIZE = 7; bool debug = true;
@@ -75,6 +77,31 @@ public:
         cout << endl;
 
     }
+
+    //Using a Depth-First Search:
+    void DFS_stack(int start){
+        vector<bool> visited(SIZE, false);
+        stack<int> st;
+
+        st.push(start);
+
+        cout << "DFS starting from vertex" << start << ":\n";
+
+        while(!st.empty()){
+
+            int v = st.top();
+            st.pop();
+
+            if(!visited[v]){
+                visited[v] = true;
+                cout << v << " ";
+
+                //Sort
+
+            }
+        }
+    }
+
     // Print the graph's adjacency list
     void printGraph() {
         cout << "Graph's adjacency list:" << endl;
@@ -99,6 +126,8 @@ int main() {
 
     // Prints adjacency list representation of graph
     graph.printGraph();
+
+    
 
     return 0;
 }
