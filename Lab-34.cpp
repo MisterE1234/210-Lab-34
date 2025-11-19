@@ -21,10 +21,14 @@ class Graph {
 public:
     // a vector of vectors of Pairs to represent an adjacency list
     vector<vector<Pair>> adjList;
+
+    // a vector of edges to keep track of the edges:
+    vector<Edge> originalEdges;
     // Graph Constructor
     Graph(vector<Edge> const &edges) {
         // resize the vector to hold SIZE elements of type vector<Edge>
         adjList.resize(SIZE);
+        originalEdges = edges;
 
         // add edges to the directed graph
         for (auto &edge: edges) {
