@@ -3,9 +3,10 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 
-const int SIZE = 7;
+const int SIZE = 7; bool debug = true;
 
 struct Edge {
     int src, dest, weight;
@@ -40,8 +41,14 @@ public:
     }
     //using a Breadth First Search:
     void BFS(int start){
-      vector<bool> visited (SIZE, false); 
-    queue
+        //creating a vector to keep track of which nodes have al;ready been visted:
+        vector<bool> visited (SIZE, false); 
+        queue<int> q;
+
+        visited[start] = true;
+        q.push(start);
+
+        cout << "BFS starting from vertex " << start << ":\n";
 
     }
     // Print the graph's adjacency list
