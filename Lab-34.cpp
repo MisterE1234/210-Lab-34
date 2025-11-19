@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 const int SIZE = 7; bool debug = true;
@@ -49,6 +50,29 @@ public:
         q.push(start);
 
         cout << "BFS starting from vertex " << start << ":\n";
+
+        //using a while loop to traverse through all the nodes:
+        while (!q.empty()) {
+            int v = q.front();
+            q.pop();
+            cout << v << " ";
+
+            // Sort neighbors by vertex ID to ensure consistent order:
+            vector<int> neighbors;
+            for(auto &neighbor : adjList[v]){
+                neighbors.push_back(neighbor.first);
+            }
+            sort(neighbors.begin(), neighbors.end());
+
+            //checking each neighbor node if they have been visted and adding them to q:
+            for (int dest : neighbors){
+                if (!visited[dest]){ //if the node at dest has not been visited:
+                    visited[dest] = true;
+                    q.push(dest);
+                }
+            }
+        }
+        cout << endl;
 
     }
     // Print the graph's adjacency list
