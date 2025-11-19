@@ -94,7 +94,7 @@ public:
             int v = st.top();
             st.pop();
 
-            // Sort neighbors by vertex ID to ensure consistent order:
+            //Sort neighbors by vertex ID to ensure consistent order:
             if(!visited[v]){
                 visited[v] = true;
                 cout << v << " ";
