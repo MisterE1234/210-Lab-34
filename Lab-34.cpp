@@ -70,7 +70,7 @@ public:
             sort(neighbors.begin(), neighbors.end());
 
             //checking each neighbor node if they have been visted and adding them to q:
-            for (int dest : neighbors){
+            for (int dest :  neighbors){
                 if (!visited[dest]){ //if the node at dest has not been visited:
                     visited[dest] = true;
                     q.push(dest);
