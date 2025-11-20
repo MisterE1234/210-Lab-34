@@ -21,13 +21,10 @@ public:
     // a vector of vectors of Pairs to represent an adjacency list
     vector<vector<Pair>> adjList;
 
-    // a vector of edges to keep track of the edges:
-    vector<Edge> originalEdges;
     // Graph Constructor
     Graph(vector<Edge> const &edges) {
         // resize the vector to hold SIZE elements of type vector<Edge>
         adjList.resize(SIZE);
-        originalEdges = edges;
 
         // add edges to the directed graph
         for (auto &edge: edges) {
@@ -46,16 +43,9 @@ public:
 
     }
 
-    //A helper:
-    bool isOriginalEdge(int u, int v) {
-    for (auto& e : originalEdges)
-        if (e.src == u && e.dest == v)
-            return true;
-    return false;
-}
 
     //using a Breadth First Search:
-    vector<int> BFS(int start){
+    vector<int> BFS(const Graph& graph, int start){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited (SIZE, false); 
         queue<int> q;
@@ -74,18 +64,11 @@ public:
             q.pop();
             order.push_back(v); //record visit
 
-            // Sort neighbors by vertex ID to ensure consistent order:
-            vector<int> neighbors;
-            for(auto& p : adjList[v]){
-                neighbors.push_back(p.first);
-            }
-            sort(neighbors.begin(), neighbors.end());
-
-            //checking each neighbor node if they have been visted and adding them to q:
-            for (int dest : neighbors){
-                if (!visited[dest]){ //if the node at dest has not been visited:
-                    visited[dest] = true;
-                    q.push(dest);
+            for (auto &p : graph.adjList[v]){
+                int v = p.first;
+                if(!visited[v]){
+                    visited[v] = true;
+                    q.push(v);
                 }
             }
         }
@@ -111,14 +94,14 @@ public:
 
             int v = st.top();
             st.pop();
-
+            vector<int> neighbors;
             //Sort neighbors by vertex ID to ensure consistent order:
             if(!visited[v]){
                 visited[v] = true;
                 order.push_back(v); //record visit
 
                 //Sort neighbors in reverse order so smallest comes out first:
-                vector<int> neighbors;
+                
                 for(auto& p: adjList[v]){
                     neighbors.push_back(p.first);
                 }
@@ -132,7 +115,6 @@ public:
                     }
                     }
                 }
-            }
         
         return order;
     }
@@ -173,7 +155,7 @@ int main() {
     cout << endl;
 
     //Print BFS from node 0:
-    vector<int>bfsOrder = graph.BFS(0);
+    vector<int>bfsOrder = graph.BFS(graph, 0);
     cout << "BFS starting from vertex 0:\n";
     for(int v : bfsOrder) {
         cout << v << " ";
