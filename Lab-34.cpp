@@ -51,6 +51,7 @@ public:
         queue<int> q;
         vector<int> order; // keeps track of visit order
 
+        //set the visited status of the starting value to true and start the queue at the starting value
         visited[start] = true;
         q.push(start);
 
@@ -64,6 +65,7 @@ public:
             q.pop();
             order.push_back(v); //record visit
 
+            // for each entry(node) in the graph adjecent list at node v, check to see if it has been visited.
             for (auto &p : graph.adjList[v]){
                 int v = p.first;
                 if(!visited[v]){
@@ -77,7 +79,7 @@ public:
     }
 
     //Using a Depth-First Search:
-    vector<int> DFS(int start){
+    vector<int> DFS(const Graph &g, int start){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited(SIZE, false);
         stack<int> st;
@@ -94,27 +96,23 @@ public:
 
             int v = st.top();
             st.pop();
-            vector<int> neighbors;
-            //Sort neighbors by vertex ID to ensure consistent order:
+
+            //if value v has not been visited 
             if(!visited[v]){
+                //setting visited to true at value v and adding v to the order:
                 visited[v] = true;
                 order.push_back(v); //record visit
 
-                //Sort neighbors in reverse order so smallest comes out first:
                 
-                for(auto& p: adjList[v]){
-                    neighbors.push_back(p.first);
+                // for each entry(node) in the graph adjecent list at node v, check to see if it has been visited.
+                for(auto& p: g.adjList[v]){
+                    int v = p.first;
+                    if(!visited[v]){
+                        st.push(v);
+                    }
                 }
             }
-                sort(neighbors.begin(), neighbors.end()); //ascending order
-
-                //push in reverse order:
-                for(int i = neighbors.size() - 1; i >= 0; i--){
-                    if(!visited[neighbors[i]]){
-                        st.push(neighbors[i]);
-                    }
-                    }
-                }
+        }
         
         return order;
     }
@@ -147,7 +145,7 @@ int main() {
     graph.printGraph();
 
     //Print DFS from node 0:
-    vector<int>dfsOrder = graph.DFS(0);
+    vector<int>dfsOrder = graph.DFS(graph, 0);
     cout << "DFS starting from vertex 0:\n";
     for(int v : dfsOrder) {
         cout << v << " ";
