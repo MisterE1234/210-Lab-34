@@ -9,7 +9,7 @@
 using namespace std;
 
 const int SIZE = 7; bool debug = true;
-
+//Struct to keep track of the edges:
 struct Edge {
     int src, dest, weight;
 };
