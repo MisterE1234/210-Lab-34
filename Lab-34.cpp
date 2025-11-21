@@ -135,13 +135,12 @@ public:
                 int dest = p.first;
                 int weight = p.second;
 
-                //to advoid print duplicate roads:
-                if(src < dest){
-                    cout << "City " << src
-                        << " <----" << weight << "----> "
-                        << "City " << dest << endl;
-                }
+                cout << "City " << src
+                    << " <---- " << weight << " miles ----> "
+                    << "City " << dest << endl;
+                
             }
+            cout << endl;
         }
         cout << "================\n";
     }
@@ -156,25 +155,28 @@ int main() {
         {0,1,9},{0,4,6},{0,3,21},{0,8,16},{1,2,8},{1,5,6},{3,5,14},{2,4,10},{2,5,4},{4,5,9},{5,6,8},{6,7,4},{2,8,12},{4,7,8}
     };
 
+    
     // Creates graph
     Graph graph(edges);
 
-    // Prints adjacency list representation of graph
-    graph.printGraph();
+    if(debug){
+        // Prints adjacency list representation of graph
+        graph.printGraph();
 
-    //Print DFS from node 0:
-    vector<int>dfsOrder = graph.DFS(graph, 0);
-    cout << "DFS starting from vertex 0:\n";
-    for(int v : dfsOrder) {
-        cout << v << " ";
-    }
-    cout << endl;
+        //Print DFS from node 0:
+        vector<int>dfsOrder = graph.DFS(graph, 0);
+        cout << "DFS starting from vertex 0:\n";
+        for(int v : dfsOrder) {
+            cout << v << " ";
+        }
+        cout << endl;
 
-    //Print BFS from node 0:
-    vector<int>bfsOrder = graph.BFS(graph, 0);
-    cout << "BFS starting from vertex 0:\n";
-    for(int v : bfsOrder) {
-        cout << v << " ";
+        //Print BFS from node 0:
+        vector<int>bfsOrder = graph.BFS(graph, 0);
+        cout << "BFS starting from vertex 0:\n";
+        for(int v : bfsOrder) {
+            cout << v << " ";
+        }
     }
 
     graph.displayRoadMap();
