@@ -8,7 +8,7 @@
 #include <stack>
 using namespace std;
 
-const int SIZE = 7; bool debug = true;
+const int SIZE = 9; bool debug = true;
 //Struct to keep track of the edges:
 struct Edge {
     int src, dest, weight;
@@ -135,7 +135,7 @@ int main() {
     // Creates a vector of graph edges/weights
     vector<Edge> edges = {
         // (x, y, w) —> edge from x to y having weight w
-        {0,1,12},{0,2,8},{0,3,21},{2,3,6},{2,6,2},{5,6,6},{4,5,9},{2,4,4},{2,5,5}
+        {0,1,9},{0,4,6},{0,3,21},{0,8,16},{1,2,8},{1,5,6},{3,5,14},{2,4,10},{2,5,4},{4,5,9},{5,6,8},{6,7,4},{2,8,12},{4,7,8}
     };
 
     // Creates graph
