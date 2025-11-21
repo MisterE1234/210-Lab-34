@@ -128,6 +128,24 @@ public:
         }
     }
 
+    void displayRoadMap(){
+        cout << "\n=== Road Map ===\n";
+        for(int src = 0; src < adjList.size(); src++){
+            for(auto &p : adjList[src]){
+                int dest = p.first;
+                int weight = p.second;
+
+                //to advoid print duplicate roads:
+                if(src < dest){
+                    cout << "City " << src
+                        << " <----" << weight << "----> "
+                        << "City " << dest << endl;
+                }
+            }
+        }
+        cout << "================\n";
+    }
+
     
 };
 
@@ -158,6 +176,8 @@ int main() {
     for(int v : bfsOrder) {
         cout << v << " ";
     }
+
+    graph.displayRoadMap();
     cout << endl;
     
 
