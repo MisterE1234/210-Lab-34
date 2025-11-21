@@ -228,11 +228,11 @@ int main() {
     graph.displayRoadMap();
     cout << endl;
 
-    cout << "\nBFS Level Order starting from city " << startChoice << ":\n";
+    cout << "\n(BFS) Number of Roads Needed to Traverse Starting from City " << startChoice << ":\n";
     vector<vector<int>> levels = graph.BFS_levels(startChoice);
 
     for(int i = 0; i < levels.size(); i++){
-        cout << "Level " << i << ": ";
+        cout << "# of Roads: " << i << ": ";
         for(int v : levels[i]){
             cout << v << " ";
         }
