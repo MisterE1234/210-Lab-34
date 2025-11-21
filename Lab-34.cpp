@@ -160,8 +160,42 @@ public:
     }
 
     //Using DFS to find all paths that link two cities:
-    vector<vector<int>> DFS_allPaths(int start, int dest){
+    vector<vector<int>> DFS_allPaths(int current, int dest, vector<bool>& visited, vector<int>& path, vector<vector<int>>& allPaths){
+        //creating a vector to keep track of which nodes have already been visted:
         
+        if(debug){
+        cout << "DFS_AllPaths processing...\n";
+        }
+
+        visited[current] = true;
+        path.push_back(current);
+
+        if(current == dest){
+            allPaths.push_back(path);
+        }
+        else {
+            for(auto& p : adjList[current]){
+                int next = p.first;
+                if(!visited[next]){
+                    DFS_allPaths(next, dest, visited, path, allPaths)
+                }
+            }
+        }
+    
+        //Backtrack:
+        path.pop_back();
+        visited[current] = false;
+       
+    }
+
+    vector<vector<int>> getAllPaths(int start, int dest){
+        vector<bool> visited(SIZE, false);
+        vector<int> path;
+        vector<vector<int>> allPaths;// keeps track of what paths are possible
+
+        DFS_allPaths(start, dest, visited, path, allPaths);
+
+        return allPaths;
     }
     
 
