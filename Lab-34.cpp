@@ -159,8 +159,8 @@ public:
         return order;
     }
 
-    //Using DFS to find all paths that link two cities:
-    vector<vector<int>> DFS_allPaths(int current, int dest, vector<bool>& visited, vector<int>& path, vector<vector<int>>& allPaths){
+    //A helper: Using DFS to find all paths that link two cities:
+    void DFS_allPaths(int current, int dest, vector<bool>& visited, vector<int>& path, vector<vector<int>>& allPaths){
         //creating a vector to keep track of which nodes have already been visted:
         
         if(debug){
@@ -177,7 +177,7 @@ public:
             for(auto& p : adjList[current]){
                 int next = p.first;
                 if(!visited[next]){
-                    DFS_allPaths(next, dest, visited, path, allPaths)
+                    DFS_allPaths(next, dest, visited, path, allPaths);
                 }
             }
         }
@@ -187,7 +187,7 @@ public:
         visited[current] = false;
        
     }
-
+    //A base function to get a vector containing all the paths from city A to B:
     vector<vector<int>> getAllPaths(int start, int dest){
         vector<bool> visited(SIZE, false);
         vector<int> path;
@@ -210,7 +210,7 @@ public:
         }
     }
 
-    //Displaythe graph's adjacecny list as road map.
+    //Display the graph's adjacecny list as road map.
     void displayRoadMap(){
         cout << "\n=== Road Map ===\n";
         for(int src = 0; src < adjList.size(); src++){
@@ -233,6 +233,7 @@ public:
 
 int main() {
     int startChoice = 0;
+    int destChoice = 1;
     // Creates a vector of graph edges/weights
     vector<Edge> edges = {
         // (x, y, w) —> edge from x to y having weight w
@@ -266,6 +267,19 @@ int main() {
     graph.displayRoadMap();
     cout << endl;
 
+    //Display all the routes from city A to city B:
+    cout << "\nAll paths from " << startChoice << " to " << destChoice << ":\n";
+    vector<vector<int>> paths = graph.getAllPaths(startChoice, destChoice);
+
+    for (auto& p : paths) {
+        for (int city : p){
+            cout << city << " ";
+            
+        }
+        cout << endl;
+    }
+
+    //Displaying the minimum number of roads need to travel from city of choice to any city:
     cout << "\n(BFS) Number of Roads Needed to Traverse Starting from City " << startChoice << ":\n";
     vector<vector<int>> levels = graph.BFS_levels(startChoice);
 
