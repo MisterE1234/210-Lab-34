@@ -159,7 +159,11 @@ public:
         return order;
     }
 
-
+    //Using DFS to find all paths that link two cities:
+    vector<vector<int>> DFS_allPaths(int start, int dest){
+        
+    }
+    
 
     // Print the graph's adjacency list
     void printGraph() {
@@ -232,7 +236,7 @@ int main() {
     vector<vector<int>> levels = graph.BFS_levels(startChoice);
 
     for(int i = 0; i < levels.size(); i++){
-        cout << "# of Roads: " << i << ": ";
+        cout << "# of Roads " << i << ": ";
         for(int v : levels[i]){
             cout << v << " ";
         }
