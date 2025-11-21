@@ -8,6 +8,7 @@
 #include <stack>
 using namespace std;
 
+
 const int SIZE = 9; bool debug = false;
 //Struct to keep track of the edges:
 struct Edge {
@@ -198,7 +199,6 @@ public:
         return allPaths;
     }
     
-
     // Print the graph's adjacency list
     void printGraph() {
         cout << "Graph's adjacency list:" << endl;
@@ -230,6 +230,8 @@ public:
 
     
 };
+
+
 
 int main() {
     int startChoice = 0;
@@ -268,16 +270,20 @@ int main() {
     cout << endl;
 
     //Display all the routes from city A to city B:
-    cout << "\nAll paths from " << startChoice << " to " << destChoice << ":\n";
+    cout << "\n(DFS) Displaying all paths from " << startChoice << " to " << destChoice << ":\n";
     vector<vector<int>> paths = graph.getAllPaths(startChoice, destChoice);
 
+    sort(paths.begin(), paths.end(), [](const vector<int>& a, const vector<int>& b){
+        return a.size() < b.size(); // ascending order
+    });
+
     for (auto& p : paths) {
-        for (int city : p){
-            cout << city;
-            if(city != (p.size() - 1)){
+        for(int i = 0; i < p.size(); i++){
+            cout << p[i];
+            if(i != (p.size() - 1)){
                 cout << " -> ";
             }
-        }
+       }
         cout << endl;
     }
 
