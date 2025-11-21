@@ -78,6 +78,40 @@ public:
 
     }
 
+    //Using BFS to create a list of how many roads someone would have to travel to get to a city from a point:
+    vector<vector<int>> BFS_levels(int start){
+        //creating a vector to keep track of which nodes have already been visted:
+        vector<bool> visited (SIZE, false); 
+        queue<int> q;
+        vector<int> order; // keeps track of visit order
+
+        //set the visited status of the starting value to true and start the queue at the starting value
+        visited[start] = true;
+        q.push(start);
+
+        if(debug){
+        cout << "BFS processing...\n";
+        }
+
+        //using a while loop to traverse through all the nodes:
+        while (!q.empty()) {
+            int v = q.front();
+            q.pop();
+            order.push_back(v); //record visit
+
+            // for each entry(node) in the graph adjecent list at node v, check to see if it has been visited.
+            for (auto &p : graph.adjList[v]){
+                int v = p.first;
+                if(!visited[v]){
+                    visited[v] = true;
+                    q.push(v);
+                }
+            }
+        }
+        return order;
+
+    }
+
     //Using a Depth-First Search:
     vector<int> DFS(const Graph &g, int start){
         //creating a vector to keep track of which nodes have already been visted:
@@ -116,6 +150,8 @@ public:
         
         return order;
     }
+
+
 
     // Print the graph's adjacency list
     void printGraph() {
