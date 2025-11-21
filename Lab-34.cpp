@@ -8,7 +8,7 @@
 #include <stack>
 using namespace std;
 
-const int SIZE = 9; bool debug = true;
+const int SIZE = 9; bool debug = false;
 //Struct to keep track of the edges:
 struct Edge {
     int src, dest, weight;
@@ -83,32 +83,40 @@ public:
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited (SIZE, false); 
         queue<int> q;
-        vector<int> order; // keeps track of visit order
+        vector<vector<int>> levels; // keeps track of visit order
 
         //set the visited status of the starting value to true and start the queue at the starting value
         visited[start] = true;
         q.push(start);
 
         if(debug){
-        cout << "BFS processing...\n";
+        cout << "BFS_levels processing...\n";
         }
 
         //using a while loop to traverse through all the nodes:
         while (!q.empty()) {
-            int v = q.front();
-            q.pop();
-            order.push_back(v); //record visit
+            int levelSize = q.size();
+            vector<int> level;
 
             // for each entry(node) in the graph adjecent list at node v, check to see if it has been visited.
-            for (auto &p : graph.adjList[v]){
-                int v = p.first;
-                if(!visited[v]){
-                    visited[v] = true;
-                    q.push(v);
+            for (int i = 0; i < levelSize; i++){
+                int v = q.front();
+                q.pop();
+                level.push_back(v);
+
+                //explore neighbors
+                for (auto &p : adjList[v]){
+                    int next = p.first;
+                    if(!visited[next]){
+                        visited[next] = true;
+                        q.push(next);
+                    }
                 }
+
             }
+            levels.push_back(level);
         }
-        return order;
+        return levels;
 
     }
 
@@ -186,6 +194,7 @@ public:
 };
 
 int main() {
+    int startChoice = 0;
     // Creates a vector of graph edges/weights
     vector<Edge> edges = {
         // (x, y, w) —> edge from x to y having weight w
@@ -201,7 +210,7 @@ int main() {
         graph.printGraph();
 
         //Print DFS from node 0:
-        vector<int>dfsOrder = graph.DFS(graph, 0);
+        vector<int>dfsOrder = graph.DFS(graph, startChoice);
         cout << "DFS starting from vertex 0:\n";
         for(int v : dfsOrder) {
             cout << v << " ";
@@ -209,7 +218,7 @@ int main() {
         cout << endl;
 
         //Print BFS from node 0:
-        vector<int>bfsOrder = graph.BFS(graph, 0);
+        vector<int>bfsOrder = graph.BFS(graph, startChoice);
         cout << "BFS starting from vertex 0:\n";
         for(int v : bfsOrder) {
             cout << v << " ";
@@ -218,9 +227,17 @@ int main() {
 
     graph.displayRoadMap();
     cout << endl;
-    
 
-    
+    cout << "\nBFS Level Order starting from city " << startChoice << ":\n";
+    vector<vector<int>> levels = graph.BFS_levels(startChoice);
+
+    for(int i = 0; i < levels.size(); i++){
+        cout << "Level " << i << ": ";
+        for(int v : levels[i]){
+            cout << v << " ";
+        }
+        cout << endl;
+    }
 
     return 0;
 }
