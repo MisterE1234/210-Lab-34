@@ -273,8 +273,10 @@ int main() {
 
     for (auto& p : paths) {
         for (int city : p){
-            cout << city << " ";
-            
+            cout << city;
+            if(city != (p.size() - 1)){
+                cout << " -> ";
+            }
         }
         cout << endl;
     }
