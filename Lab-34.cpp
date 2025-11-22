@@ -198,6 +198,35 @@ public:
 
         return allPaths;
     }
+
+    // Dijkstra: shortest distances from a start node to all other nodes
+    vector<int> shortestDistances(int start) {
+        vector<int> dist(SIZE, INT_MAX);
+        dist[start] = 0;
+
+        priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+        pq.push({0, start});     // (distance, node)
+
+        while (!pq.empty()) {
+            auto [currDist, node] = pq.top();
+            pq.pop();
+
+            if (currDist > dist[node]) continue;
+
+            for (auto &edge : adjList[node]) {
+                int next = edge.first;
+                int weight = edge.second;
+
+                if (dist[node] + weight < dist[next]) {
+                    dist[next] = dist[node] + weight;
+                pq.push({dist[next], next});
+                }
+            }
+        }
+
+        return dist;
+    }
+
     
     // Print the graph's adjacency list
     void printGraph() {
@@ -299,6 +328,19 @@ int main() {
         }
         cout << endl;
     }
+
+    cout << "\nShortest path from node " << startChoice << ":\n";
+
+    vector<int> d = graph.shortestDistances(startChoice);
+
+    for (int i = 0; i < d.size(); i++) {
+        cout << startChoice << " -> " << i << " : ";
+        if (d[i] == INT_MAX)
+            cout << "No Path\n";
+        else
+            cout << d[i] << "\n";
+    }   
+
 
     return 0;
 }
