@@ -199,13 +199,26 @@ public:
         return allPaths;
     }
 
-    // Dijkstra: shortest distances from a start node to all other nodes
-    vector<int> shortestDistances(int start) {
-        vector<int> dist(SIZE, INT_MAX);
-        dist[start] = 0;
+    //A helper for shortestPathsDetailed(): 
+    vector<int> buildPath(int dest, const vector<int>& parent) {
+        vector<int> path;
+        //adding the cities that in the path to the path:
+        for (int v = dest; v != -1; v = parent[v]) {
+            path.push_back(v);
+        }
+        //showing the path as the way that you will come across:
+        reverse(path.begin(), path.end());
+        return path;
+    }
 
+    //shortestPathsDetailed(): It creates a pair of vectors that contains the
+    pair<vector<int>, vector<int>> shortestPathsDetailed(int start) {
+        vector<int> dist(SIZE, INT_MAX);
+        vector<int> parent(SIZE, -1);
+
+        dist[start] = 0;
         priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
-        pq.push({0, start});     // (distance, node)
+        pq.push({0, start});
 
         while (!pq.empty()) {
             auto [currDist, node] = pq.top();
@@ -219,13 +232,14 @@ public:
 
                 if (dist[node] + weight < dist[next]) {
                     dist[next] = dist[node] + weight;
-                pq.push({dist[next], next});
+                    parent[next] = node;
+                    pq.push({dist[next], next});
                 }
             }
         }
-
-        return dist;
+        return {dist, parent};
     }
+
 
     
     // Print the graph's adjacency list
@@ -329,17 +343,32 @@ int main() {
         cout << endl;
     }
 
-    cout << "\nShortest path from node " << startChoice << ":\n";
+    //Displaying the shortest weighted route from the City of choice to every city:
+    auto result = graph.shortestPathsDetailed(startChoice);
+    vector<int> dist = result.first;
+    vector<int> parent = result.second;
 
-    vector<int> d = graph.shortestDistances(startChoice);
+    cout << "\n=== Shortest Paths From City " << startChoice << " ===\n";
 
-    for (int i = 0; i < d.size(); i++) {
-        cout << startChoice << " -> " << i << " : ";
-        if (d[i] == INT_MAX)
-            cout << "No Path\n";
-        else
-            cout << d[i] << "\n";
-    }   
+    for (int city = 0; city < SIZE; city++) {
+
+        cout << startChoice << " -> " << city << " : ";
+
+        if (dist[city] == INT_MAX) {
+            cout << "No path\n";
+            continue;
+        }
+
+        cout << dist[city] << " miles | Path: ";
+
+        vector<int> path = graph.buildPath(city, parent);
+
+        for (int i = 0; i < path.size(); i++) {
+            cout << path[i];
+            if (i < path.size() - 1) cout << " -> ";
+        }
+        cout << "\n";
+    }
 
 
     return 0;
