@@ -350,10 +350,12 @@ int main() {
 
     cout << "\n=== Shortest Paths From City " << startChoice << " ===\n";
 
+    //using a for loop to go through each city:
     for (int city = 0; city < SIZE; city++) {
 
         cout << startChoice << " -> " << city << " : ";
 
+        //if the distance is infinite aka there is no path to other city:
         if (dist[city] == INT_MAX) {
             cout << "No path\n";
             continue;
@@ -361,8 +363,10 @@ int main() {
 
         cout << dist[city] << " miles | Path: ";
 
+        //using the vector containing the number of cities and connections between each city to create a path to each.
         vector<int> path = graph.buildPath(city, parent);
 
+        //going through each city in a path to complete the display of the path
         for (int i = 0; i < path.size(); i++) {
             cout << path[i];
             if (i < path.size() - 1) cout << " -> ";
