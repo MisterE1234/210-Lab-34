@@ -291,6 +291,7 @@ int main() {
     cout << "\n(BFS) Number of Roads Needed to Traverse Starting from City " << startChoice << ":\n";
     vector<vector<int>> levels = graph.BFS_levels(startChoice);
 
+    //displaying each different level of different amount of roads:
     for(int i = 0; i < levels.size(); i++){
         cout << "# of Roads " << i << ": ";
         for(int v : levels[i]){
