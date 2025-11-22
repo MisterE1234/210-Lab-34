@@ -44,41 +44,6 @@ public:
 
     }
 
-
-    //using a Breadth First Search:
-    vector<int> BFS(const Graph& graph, int start){
-        //creating a vector to keep track of which nodes have already been visted:
-        vector<bool> visited (SIZE, false); 
-        queue<int> q;
-        vector<int> order; // keeps track of visit order
-
-        //set the visited status of the starting value to true and start the queue at the starting value
-        visited[start] = true;
-        q.push(start);
-
-        if(debug){
-        cout << "BFS processing...\n";
-        }
-
-        //using a while loop to traverse through all the nodes:
-        while (!q.empty()) {
-            int v = q.front();
-            q.pop();
-            order.push_back(v); //record visit
-
-            // for each entry(node) in the graph adjecent list at node v, check to see if it has been visited.
-            for (auto &p : graph.adjList[v]){
-                int v = p.first;
-                if(!visited[v]){
-                    visited[v] = true;
-                    q.push(v);
-                }
-            }
-        }
-        return order;
-
-    }
-
     //Using BFS to create a list of how many roads someone would have to travel to get to a city from a point:
     vector<vector<int>> BFS_levels(int start){
         //creating a vector to keep track of which nodes have already been visted:
@@ -121,44 +86,6 @@ public:
 
     }
 
-    //Using a Depth-First Search:
-    vector<int> DFS(const Graph &g, int start){
-        //creating a vector to keep track of which nodes have already been visted:
-        vector<bool> visited(SIZE, false);
-        stack<int> st;
-        vector<int> order;// keeps track of visit order
-
-        st.push(start);
-
-        if(debug){
-        cout << "DFS processing...\n";
-        }
-
-        //using a while loop to traverse through all the nodes:
-        while(!st.empty()){
-
-            int v = st.top();
-            st.pop();
-
-            //if value v has not been visited 
-            if(!visited[v]){
-                //setting visited to true at value v and adding v to the order:
-                visited[v] = true;
-                order.push_back(v); //record visit
-
-                
-                // for each entry(node) in the graph adjecent list at node v, check to see if it has been visited.
-                for(auto& p: g.adjList[v]){
-                    int v = p.first;
-                    if(!visited[v]){
-                        st.push(v);
-                    }
-                }
-            }
-        }
-        
-        return order;
-    }
 
     //A helper: Using DFS to find all paths that link two cities:
     void DFS_allPaths(int current, int dest, vector<bool>& visited, vector<int>& path, vector<vector<int>>& allPaths){
@@ -199,7 +126,7 @@ public:
         return allPaths;
     }
 
-    //A helper for shortestPathsDetailed(): 
+    //A helper for shortestPathsDetailed():
     vector<int> buildPath(int dest, const vector<int>& parent) {
         vector<int> path;
         //adding the cities that in the path to the path:
@@ -211,7 +138,7 @@ public:
         return path;
     }
 
-    //shortestPathsDetailed(): It creates a pair of vectors that contains the
+    //shortestPathsDetailed(): It uses the Dijkstra algorithm to create a pair of vectors that contains a vector path to each city:
     pair<vector<int>, vector<int>> shortestPathsDetailed(int start) {
         vector<int> dist(SIZE, INT_MAX);
         vector<int> parent(SIZE, -1);
@@ -240,18 +167,6 @@ public:
         return {dist, parent};
     }
 
-
-    
-    // Print the graph's adjacency list
-    void printGraph() {
-        cout << "Graph's adjacency list:" << endl;
-        for (int i = 0; i < adjList.size(); i++) {
-            cout << i << " --> ";
-            for (Pair v : adjList[i])
-                cout << "(" << v.first << ", " << v.second << ") ";
-                cout << endl;
-        }
-    }
 
     //Display the graph's adjacecny list as road map.
     void displayRoadMap(){
@@ -289,25 +204,6 @@ int main() {
     // Creates graph
     Graph graph(edges);
 
-    if(debug){
-        // Prints adjacency list representation of graph
-        graph.printGraph();
-
-        //Print DFS from node 0:
-        vector<int>dfsOrder = graph.DFS(graph, startChoice);
-        cout << "DFS starting from vertex 0:\n";
-        for(int v : dfsOrder) {
-            cout << v << " ";
-        }
-        cout << endl;
-
-        //Print BFS from node 0:
-        vector<int>bfsOrder = graph.BFS(graph, startChoice);
-        cout << "BFS starting from vertex 0:\n";
-        for(int v : bfsOrder) {
-            cout << v << " ";
-        }
-    }
 
     graph.displayRoadMap();
     cout << endl;
