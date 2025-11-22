@@ -167,48 +167,46 @@ public:
         return {dist, parent};
     }
 
-    //MST_Prim() using Prim's Algorithm to create a Minimum Spanning Tree:
     vector<Edge> MST_Prim(int start = 0) {
-        vector<bool> inMST(SIZE, false);
-        priority_queue<
-            pair<int, Pair>,
-            vector<pair<int, Pair>>,
-            greater<pair<int, Pair>>
-        > pq;  // (weight, (src, dest))
+        vector<int> key(SIZE, INT_MAX);     // best edge weight to each node
+        vector<int> parent(SIZE, -1);       // store MST parent node
+        vector<bool> inMST(SIZE, false);    // included in MST?
 
-        vector<Edge> mstEdges;
+        key[start] = 0; // start node
 
-        // Start from any vertex (default = 0)
-        inMST[start] = true;
+        // Build MST with SIZE - 1 edges
+        for (int i = 0; i < SIZE - 1; i++) {
+        
+            // Pick the vertex u NOT in MST with the smallest key value
+            int u = -1;
+            int minValue = INT_MAX;
+            for (int v = 0; v < SIZE; v++) {
+                if (!inMST[v] && key[v] < minValue) {
+                    minValue = key[v];
+                    u = v;
+                }
+            }
 
-        // push all edges from the start node
-        for (auto &p : adjList[start]) {
-            int dest = p.first;
-            int weight = p.second;
-            pq.push({weight, {start, dest}});
+            inMST[u] = true; // include u in MST
+
+            // Update key[] and parent[] for neighbors of u
+            for (auto &p : adjList[u]) {
+                int v = p.first;
+                int weight = p.second;
+
+                // If v is not in MST and weight < current key
+                if (!inMST[v] && weight < key[v]) {
+                    key[v] = weight;
+                    parent[v] = u;
+                }
+            }
         }
 
-        while (!pq.empty() && mstEdges.size() < SIZE - 1) {
-            auto [weight, edgePair] = pq.top();
-            pq.pop();
-
-            int src = edgePair.first;
-            int dest = edgePair.second;
-
-            if (inMST[dest]) continue; // skip if already included
-
-            // add edge to MST
-            inMST[dest] = true;
-            mstEdges.push_back({src, dest, weight});
-
-            // push all edges of `dest`
-            for (auto &p : adjList[dest]) {
-                int next = p.first;
-                int w = p.second;
-
-                if (!inMST[next]) {
-                    pq.push({w, {dest, next}});
-                }
+        // Convert parent[] into list of MST edges
+        vector<Edge> mstEdges;
+        for (int v = 0; v < SIZE; v++) {
+            if (parent[v] != -1) {
+                mstEdges.push_back({parent[v], v, key[v]});
             }
         }
 
@@ -326,6 +324,7 @@ int main() {
 
     int totalMiles = 0;
 
+    //Using a for iterator loop to display each distinct edge:
     for (auto &e : mst) {
         cout << e.src << " --(" << e.weight << " miles)-- " << e.dest << endl;
         totalMiles += e.weight;
