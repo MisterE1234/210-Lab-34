@@ -167,6 +167,55 @@ public:
         return {dist, parent};
     }
 
+    //MST_Prim() using Prim's Algorithm to create a Minimum Spanning Tree:
+    vector<Edge> MST_Prim(int start = 0) {
+        vector<bool> inMST(SIZE, false);
+        priority_queue<
+            pair<int, Pair>,
+            vector<pair<int, Pair>>,
+            greater<pair<int, Pair>>
+        > pq;  // (weight, (src, dest))
+
+        vector<Edge> mstEdges;
+
+        // Start from any vertex (default = 0)
+        inMST[start] = true;
+
+        // push all edges from the start node
+        for (auto &p : adjList[start]) {
+            int dest = p.first;
+            int weight = p.second;
+            pq.push({weight, {start, dest}});
+        }
+
+        while (!pq.empty() && mstEdges.size() < SIZE - 1) {
+            auto [weight, edgePair] = pq.top();
+            pq.pop();
+
+            int src = edgePair.first;
+            int dest = edgePair.second;
+
+            if (inMST[dest]) continue; // skip if already included
+
+            // add edge to MST
+            inMST[dest] = true;
+            mstEdges.push_back({src, dest, weight});
+
+            // push all edges of `dest`
+            for (auto &p : adjList[dest]) {
+                int next = p.first;
+                int w = p.second;
+
+                if (!inMST[next]) {
+                    pq.push({w, {dest, next}});
+                }
+            }
+        }
+
+        return mstEdges;
+    }
+
+
 
     //Display the graph's adjacecny list as road map.
     void displayRoadMap(){
@@ -269,6 +318,21 @@ int main() {
         }
         cout << "\n";
     }
+
+    // Displaying the MST using Prim's Algorithm
+    cout << "\n=== Minimum Spanning Tree (Prim's Algorithm) ===\n";
+
+    vector<Edge> mst = graph.MST_Prim(0);
+
+    int totalMiles = 0;
+
+    for (auto &e : mst) {
+        cout << e.src << " --(" << e.weight << " miles)-- " << e.dest << endl;
+        totalMiles += e.weight;
+    }
+
+    cout << "Total miles of MST: " << totalMiles << "\n";
+
 
 
     return 0;
