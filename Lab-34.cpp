@@ -237,15 +237,44 @@ public:
 };
 
 int menu(){
-    cout << "Road Map Network Menu:\n";
-    cout << "[1] Display Road Map\n";
-    cout << "[2] Display the Minimum number of Roads (BFS)\n";
-    cout << "[3] Display All Paths from City A to City B\n";
+    bool valid = false;
+    int choice;
+
+    while(!valid){
+        cout << "Road Map Network Menu:\n";
+        cout << "[1] Display Road Map\n";
+        cout << "[2] Display the Minimum number of Roads From City A (BFS)\n";
+        cout << "[3] Display All Paths From City A to City B\n";
+        cout << "[4] Calculate Shortest Paths From City A\n";
+        cout << "[5] Find the Minimum Spanning Tree\n";
+        cout << "[0] Exit\n";
+
+        cout << "Enter Your Choice (0-5): ";
+
+        cin >> choice;
+
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Not an integer. Try again...\n";
+        }
+        else if(choice < 0 || choice > 5){
+            cout << "Not in range. Try again...\n";
+        }
+        else{
+            valid = true;
+        }
+        
+    }
+
+    return choice;
 }
 
 
 
 int main() {
+
+    bool exit = false;
     int startChoice = 0;
     int destChoice = 1;
     // Creates a vector of graph edges/weights
@@ -258,9 +287,15 @@ int main() {
     // Creates graph
     Graph graph(edges);
 
+    while(!exit){
+        switch(menu()){
 
-    graph.displayRoadMap();
-    cout << endl;
+            case 0:
+            graph.displayRoadMap();
+    
+            cout << endl;
+            break;
+    
 
     //Display all the routes from city A to city B:
     cout << "\n(DFS) Displaying all paths from " << startChoice << " to " << destChoice << ":\n";
@@ -338,6 +373,9 @@ int main() {
     }
 
     cout << "Total miles of MST: " << totalMiles << "\n";
+
+        }
+    }
 
 
 
