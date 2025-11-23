@@ -167,6 +167,9 @@ public:
         return {dist, parent};
     }
 
+    //MST_Prim() creates a vector of edges that contains the smallest distinct edges
+    //requires: an int variable
+    //returns: a vector of Edges
     vector<Edge> MST_Prim(int start = 0) {
         vector<int> key(SIZE, INT_MAX);     // best edge weight to each node
         vector<int> parent(SIZE, -1);       // store MST parent node
@@ -218,10 +221,11 @@ public:
     //Display the graph's adjacecny list as road map.
     void displayRoadMap(){
         cout << "\n=== Road Map ===\n";
+        //using a for loop to go through each entry of adjList (aka each city)
         for(int src = 0; src < adjList.size(); src++){
-            for(auto &p : adjList[src]){
-                int dest = p.first;
-                int weight = p.second;
+            for(auto &p : adjList[src]){ //using an interator for loop to progress through each entry in a particular adjList entry
+                int dest = p.first; //dest equals the second city in the vector triad
+                int weight = p.second; // weight equals the weight/distance of the edge
 
                 cout << "City " << src
                     << " <---- " << weight << " miles ----> "
@@ -236,10 +240,14 @@ public:
     
 };
 
+//menu() Displays the menu of choices that the user chooses from
+//requires: none
+//returns: an int value
 int menu(){
     bool valid = false;
     int choice;
 
+    //using a while loop to validate the correct output:
     while(!valid){
         cout << "Road Map Network Menu:\n";
         cout << "[1] Display Road Map\n";
@@ -253,15 +261,15 @@ int menu(){
 
         cin >> choice;
 
-        if(cin.fail()){
+        if(cin.fail()){//if the user input is not an integer
             cin.clear();
             cin.ignore(10000, '\n');
             cout << "Not an integer. Try again...\n";
         }
-        else if(choice < 0 || choice > 5){
+        else if(choice < 0 || choice > 5){//if the choice is less than 0 or greater than the amount of cities
             cout << "Not in range. Try again...\n";
         }
-        else{
+        else{//if the input is correct:
             valid = true;
         }
         
