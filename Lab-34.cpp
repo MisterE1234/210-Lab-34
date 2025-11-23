@@ -236,6 +236,13 @@ public:
     
 };
 
+int menu(){
+    cout << "Road Map Network Menu:\n";
+    cout << "[1] Display Road Map\n";
+    cout << "[2] Display the Minimum number of Roads (BFS)\n";
+    cout << "[3] Display All Paths from City A to City B\n";
+}
+
 
 
 int main() {
