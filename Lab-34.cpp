@@ -277,6 +277,13 @@ int main() {
     bool exit = false;
     int startChoice = 0;
     int destChoice = 1;
+
+    vector<vector<int>> roads;
+    vector<int> dist;
+    vector<int> map;
+
+    
+
     // Creates a vector of graph edges/weights
     vector<Edge> edges = {
         // (x, y, w) —> edge from x to y having weight w
@@ -286,6 +293,8 @@ int main() {
     
     // Creates graph
     Graph graph(edges);
+    
+    auto result = graph.shortestPathsDetailed(0);
 
     while(!exit){
         switch(menu()){
@@ -303,12 +312,12 @@ int main() {
             case 2:
                 //Displaying the minimum number of roads need to travel from city of choice to any city:
                 cout << "\n(BFS) Number of Roads Needed to Traverse Starting from City " << startChoice << ":\n";
-                vector<vector<int>> levels = graph.BFS_levels(startChoice);
+                roads = graph.BFS_levels(startChoice);
 
                 //displaying each different level of different amount of roads:
-                for(int i = 0; i < levels.size(); i++){
+                for(int i = 0; i < roads.size(); i++){
                     cout << "# of Roads " << i << ": ";
-                    for(int v : levels[i]){
+                    for(int v : roads[i]){
                         cout << v << " ";
                     }
                     cout << endl;
@@ -318,13 +327,13 @@ int main() {
             case 3:
                 //Display all the routes from city A to city B:
                 cout << "\n(DFS) Displaying all paths from " << startChoice << " to " << destChoice << ":\n";
-                vector<vector<int>> paths = graph.getAllPaths(startChoice, destChoice);
+                roads = graph.getAllPaths(startChoice, destChoice);
 
-                sort(paths.begin(), paths.end(), [](const vector<int>& a, const vector<int>& b){
+                sort(roads.begin(), roads.end(), [](const vector<int>& a, const vector<int>& b){
                     return a.size() < b.size(); // ascending order
                 });
 
-                for (auto& p : paths) {
+                for (auto& p : roads) {
                     for(int i = 0; i < p.size(); i++){
                         cout << p[i];
                         if(i != (p.size() - 1)){
@@ -337,9 +346,9 @@ int main() {
 
             case 4:
                 //Displaying the shortest weighted route from the City of choice to every city:
-                auto result = graph.shortestPathsDetailed(startChoice);
-                vector<int> dist = result.first;
-                vector<int> parent = result.second;
+                result = graph.shortestPathsDetailed(startChoice);
+                dist = result.first;
+                map = result.second;
 
                 cout << "\n=== Shortest Paths From City " << startChoice << " ===\n";
 
@@ -392,16 +401,5 @@ int main() {
     }
 
             
-    
-
-
-    
-
-    
-
-    
-
-
-
     return 0;
 }
