@@ -270,6 +270,29 @@ int menu(){
     return choice;
 }
 
+int citySelect(){
+    int choice;
+    bool valid = false;
+
+    while(!valid){
+        cout << "Choose a City: \n";
+        cin >> choice;
+
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Not an integer. Try again...\n";
+        }
+        else if(choice < 0 || choice >= SIZE){
+            cout << "Not in range. Try again...\n";
+        }
+        else{
+            valid = true;
+        }
+
+    }
+}
+
 
 
 int main() {
@@ -301,17 +324,23 @@ int main() {
     while(!exit){
         switch(menu()){
 
-            case 0:
+            case 0:{
                 cout << "Exiting Program ...\n";
                 exit = true;
                 break;
+            }
 
-            case 1:
+            case 1:{
                 graph.displayRoadMap();
                 cout << endl;
                 break;
+            }
 
-            case 2:
+            case 2:{
+
+                cout << "Select Starting City: \n";
+                startChoice = citySelect();
+
                 //Displaying the minimum number of roads need to travel from city of choice to any city:
                 cout << "\n(BFS) Number of Roads Needed to Traverse Starting from City " << startChoice << ":\n";
                 roads = graph.BFS_levels(startChoice);
@@ -325,8 +354,15 @@ int main() {
                     cout << endl;
                 }
                 break;
+            }
 
-            case 3:
+            case 3:{
+                cout << "Select Starting City: \n";
+                startChoice = citySelect();
+
+                cout << "Select Destination City: \n";
+                destChoice = citySelect();
+
                 //Display all the routes from city A to city B:
                 cout << "\n(DFS) Displaying all paths from " << startChoice << " to " << destChoice << ":\n";
                 roads = graph.getAllPaths(startChoice, destChoice);
@@ -345,8 +381,12 @@ int main() {
                     cout << endl;
                 }
                 break;
+            }
 
-            case 4:
+            case 4:{
+                cout << "Select Starting City: \n";
+                startChoice = citySelect();
+                
                 //Displaying the shortest weighted route from the City of choice to every city:
                 result = graph.shortestPathsDetailed(startChoice);
                 dist = result.first;
@@ -378,8 +418,9 @@ int main() {
                     cout << "\n";
                 }
                 break;
+            }
 
-            case 5:
+            case 5:{
                 // Displaying the MST using Prim's Algorithm
                 cout << "\n=== Minimum Spanning Tree (Prim's Algorithm) ===\n";
 
@@ -395,9 +436,11 @@ int main() {
 
                 cout << "Total miles of MST: " << count << "\n";
                 break;
+            }
 
-            default:
+            default:{
                 cout << "Error. Please try again...\n";
+            }
 
         }
     }
