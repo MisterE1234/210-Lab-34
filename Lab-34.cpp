@@ -264,7 +264,7 @@ int menu(){
         cout << "Road Map Network Menu:\n";
         cout << "[1] Display Road Map\n";
         cout << "[2] Display the Minimum number of Roads From City A (BFS)\n";
-        cout << "[3] Display All Paths From City A to City B\n";
+        cout << "[3] Display All Paths From City A to City B (DFS)\n";
         cout << "[4] Calculate Shortest Paths From City A\n";
         cout << "[5] Find the Minimum Spanning Tree\n";
         cout << "[0] Exit\n";
@@ -323,11 +323,13 @@ int citySelect(){
 
 int main() {
 
+    //Declaring Variables:
     bool exit = false;
     int startChoice = 0;
     int destChoice = 1;
     int count;
 
+    //Declaring vectors:
     vector<vector<int>> roads;
     vector<int> dist;
     vector<int> parent;
@@ -350,19 +352,19 @@ int main() {
     while(!exit){
         switch(menu()){
 
-            case 0:{
+            case 0:{ //exiting program:
                 cout << "Exiting Program ...\n";
                 exit = true;
                 break;
             }
 
-            case 1:{
+            case 1:{//Displaying all edges and connections
                 graph.displayRoadMap();
                 cout << endl;
                 break;
             }
 
-            case 2:{
+            case 2:{//Showing the minimum number roads needed to get to any destination:
 
                 cout << "Select Starting City: \n";
                 startChoice = citySelect();
@@ -382,7 +384,7 @@ int main() {
                 break;
             }
 
-            case 3:{
+            case 3:{//Displaying all routes between two user selected cities:
                 cout << "Select Starting City: \n";
                 startChoice = citySelect();
 
@@ -396,8 +398,9 @@ int main() {
                 sort(roads.begin(), roads.end(), [](const vector<int>& a, const vector<int>& b){
                     return a.size() < b.size(); // ascending order
                 });
-
+                //for each path in roads
                 for (auto& p : roads) {
+                    //for each node in the current path
                     for(int i = 0; i < p.size(); i++){
                         cout << p[i];
                         if(i != (p.size() - 1)){
@@ -409,7 +412,7 @@ int main() {
                 break;
             }
 
-            case 4:{
+            case 4:{//Detailing the shortest routes from a user city to any destination:
                 cout << "Select Starting City: \n";
                 startChoice = citySelect();
                 
@@ -464,7 +467,7 @@ int main() {
                 break;
             }
 
-            default:{
+            default:{//Error insurance:
                 cout << "Error. Please try again...\n";
             }
 
