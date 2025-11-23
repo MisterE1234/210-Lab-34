@@ -270,27 +270,33 @@ int menu(){
     return choice;
 }
 
+//citySelect() Gets user input for which city is chosen
+//requires: none
+//returns: an int value
 int citySelect(){
     int choice;
     bool valid = false;
 
+    //using a while loop to validate the correct output:
     while(!valid){
-        cout << "Choose a City: \n";
+        cout << "Choose a City: ";
         cin >> choice;
 
-        if(cin.fail()){
+        if(cin.fail()){ //if the user input is not an integer
             cin.clear();
             cin.ignore(10000, '\n');
             cout << "Not an integer. Try again...\n";
         }
-        else if(choice < 0 || choice >= SIZE){
+        else if(choice < 0 || choice >= SIZE){ //if the choice is less than 0 or greater than the amount of cities
             cout << "Not in range. Try again...\n";
         }
-        else{
+        else{ //if the input is correct:
             valid = true;
         }
 
     }
+
+    return choice;
 }
 
 
