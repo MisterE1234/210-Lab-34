@@ -291,91 +291,115 @@ int main() {
         switch(menu()){
 
             case 0:
-            graph.displayRoadMap();
+                cout << "Exiting Program ...\n";
+                exit = true;
+                break;
+
+            case 1:
+                graph.displayRoadMap();
+                cout << endl;
+                break;
+
+            case 2:
+                //Displaying the minimum number of roads need to travel from city of choice to any city:
+                cout << "\n(BFS) Number of Roads Needed to Traverse Starting from City " << startChoice << ":\n";
+                vector<vector<int>> levels = graph.BFS_levels(startChoice);
+
+                //displaying each different level of different amount of roads:
+                for(int i = 0; i < levels.size(); i++){
+                    cout << "# of Roads " << i << ": ";
+                    for(int v : levels[i]){
+                        cout << v << " ";
+                    }
+                    cout << endl;
+                }
+                break;
+
+            case 3:
+                //Display all the routes from city A to city B:
+                cout << "\n(DFS) Displaying all paths from " << startChoice << " to " << destChoice << ":\n";
+                vector<vector<int>> paths = graph.getAllPaths(startChoice, destChoice);
+
+                sort(paths.begin(), paths.end(), [](const vector<int>& a, const vector<int>& b){
+                    return a.size() < b.size(); // ascending order
+                });
+
+                for (auto& p : paths) {
+                    for(int i = 0; i < p.size(); i++){
+                        cout << p[i];
+                        if(i != (p.size() - 1)){
+                            cout << " -> ";
+                        }
+                    }
+                    cout << endl;
+                }
+                break;
+
+            case 4:
+                //Displaying the shortest weighted route from the City of choice to every city:
+                auto result = graph.shortestPathsDetailed(startChoice);
+                vector<int> dist = result.first;
+                vector<int> parent = result.second;
+
+                cout << "\n=== Shortest Paths From City " << startChoice << " ===\n";
+
+                //using a for loop to go through each city:
+                for (int city = 0; city < SIZE; city++) {
+
+                    cout << startChoice << " -> " << city << " : ";
+
+                    //if the distance is infinite aka there is no path to other city:
+                    if (dist[city] == INT_MAX) {
+                        cout << "No path\n";
+                        continue;
+                    }
+
+                    cout << dist[city] << " miles | Path: ";
+
+                    //using the vector containing the number of cities and connections between each city to create a path to each.
+                    vector<int> path = graph.buildPath(city, parent);
+
+                    //going through each city in a path to complete the display of the path
+                    for (int i = 0; i < path.size(); i++) {
+                        cout << path[i];
+                        if (i < path.size() - 1) cout << " -> ";
+                    }
+                    cout << "\n";
+                }
+                break;
+
+            case 5:
+                // Displaying the MST using Prim's Algorithm
+                cout << "\n=== Minimum Spanning Tree (Prim's Algorithm) ===\n";
+
+                vector<Edge> mst = graph.MST_Prim(0);
+
+                int totalMiles = 0;
+
+                //Using a for iterator loop to display each distinct edge:
+                for (auto &e : mst) {
+                    cout << e.src << " --(" << e.weight << " miles)-- " << e.dest << endl;
+                    totalMiles += e.weight;
+                }
+
+                cout << "Total miles of MST: " << totalMiles << "\n";
+                break;
+
+            default:
+                cout << "Error. Please try again...\n";
+
+        }
+    }
+
+            
     
-            cout << endl;
-            break;
+
+
     
 
-    //Display all the routes from city A to city B:
-    cout << "\n(DFS) Displaying all paths from " << startChoice << " to " << destChoice << ":\n";
-    vector<vector<int>> paths = graph.getAllPaths(startChoice, destChoice);
+    
 
-    sort(paths.begin(), paths.end(), [](const vector<int>& a, const vector<int>& b){
-        return a.size() < b.size(); // ascending order
-    });
-
-    for (auto& p : paths) {
-        for(int i = 0; i < p.size(); i++){
-            cout << p[i];
-            if(i != (p.size() - 1)){
-                cout << " -> ";
-            }
-       }
-        cout << endl;
-    }
-
-    //Displaying the minimum number of roads need to travel from city of choice to any city:
-    cout << "\n(BFS) Number of Roads Needed to Traverse Starting from City " << startChoice << ":\n";
-    vector<vector<int>> levels = graph.BFS_levels(startChoice);
-
-    //displaying each different level of different amount of roads:
-    for(int i = 0; i < levels.size(); i++){
-        cout << "# of Roads " << i << ": ";
-        for(int v : levels[i]){
-            cout << v << " ";
-        }
-        cout << endl;
-    }
-
-    //Displaying the shortest weighted route from the City of choice to every city:
-    auto result = graph.shortestPathsDetailed(startChoice);
-    vector<int> dist = result.first;
-    vector<int> parent = result.second;
-
-    cout << "\n=== Shortest Paths From City " << startChoice << " ===\n";
-
-    //using a for loop to go through each city:
-    for (int city = 0; city < SIZE; city++) {
-
-        cout << startChoice << " -> " << city << " : ";
-
-        //if the distance is infinite aka there is no path to other city:
-        if (dist[city] == INT_MAX) {
-            cout << "No path\n";
-            continue;
-        }
-
-        cout << dist[city] << " miles | Path: ";
-
-        //using the vector containing the number of cities and connections between each city to create a path to each.
-        vector<int> path = graph.buildPath(city, parent);
-
-        //going through each city in a path to complete the display of the path
-        for (int i = 0; i < path.size(); i++) {
-            cout << path[i];
-            if (i < path.size() - 1) cout << " -> ";
-        }
-        cout << "\n";
-    }
-
-    // Displaying the MST using Prim's Algorithm
-    cout << "\n=== Minimum Spanning Tree (Prim's Algorithm) ===\n";
-
-    vector<Edge> mst = graph.MST_Prim(0);
-
-    int totalMiles = 0;
-
-    //Using a for iterator loop to display each distinct edge:
-    for (auto &e : mst) {
-        cout << e.src << " --(" << e.weight << " miles)-- " << e.dest << endl;
-        totalMiles += e.weight;
-    }
-
-    cout << "Total miles of MST: " << totalMiles << "\n";
-
-        }
-    }
+    
 
 
 
