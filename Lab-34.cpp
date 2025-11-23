@@ -147,12 +147,14 @@ public:
         priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
         pq.push({0, start});
 
+        //as long as pq is not empty the while loop will occur
         while (!pq.empty()) {
             auto [currDist, node] = pq.top();
             pq.pop();
-
+            //if currDist is greater than the distance of the current node:
             if (currDist > dist[node]) continue;
 
+            //for each entry in current node's adjacent cities:
             for (auto &edge : adjList[node]) {
                 int next = edge.first;
                 int weight = edge.second;
