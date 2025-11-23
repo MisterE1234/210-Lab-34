@@ -277,10 +277,12 @@ int main() {
     bool exit = false;
     int startChoice = 0;
     int destChoice = 1;
+    int count;
 
     vector<vector<int>> roads;
     vector<int> dist;
-    vector<int> map;
+    vector<int> parent;
+    vector<int> path;
 
     
 
@@ -348,7 +350,7 @@ int main() {
                 //Displaying the shortest weighted route from the City of choice to every city:
                 result = graph.shortestPathsDetailed(startChoice);
                 dist = result.first;
-                map = result.second;
+                parent = result.second;
 
                 cout << "\n=== Shortest Paths From City " << startChoice << " ===\n";
 
@@ -366,7 +368,7 @@ int main() {
                     cout << dist[city] << " miles | Path: ";
 
                     //using the vector containing the number of cities and connections between each city to create a path to each.
-                    vector<int> path = graph.buildPath(city, parent);
+                    path = graph.buildPath(city, parent);
 
                     //going through each city in a path to complete the display of the path
                     for (int i = 0; i < path.size(); i++) {
@@ -383,15 +385,15 @@ int main() {
 
                 vector<Edge> mst = graph.MST_Prim(0);
 
-                int totalMiles = 0;
+                count = 0;
 
                 //Using a for iterator loop to display each distinct edge:
                 for (auto &e : mst) {
                     cout << e.src << " --(" << e.weight << " miles)-- " << e.dest << endl;
-                    totalMiles += e.weight;
+                    count += e.weight;
                 }
 
-                cout << "Total miles of MST: " << totalMiles << "\n";
+                cout << "Total miles of MST: " << count << "\n";
                 break;
 
             default:
