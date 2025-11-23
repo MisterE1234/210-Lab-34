@@ -126,7 +126,9 @@ public:
         return allPaths;
     }
 
-    //A helper for shortestPathsDetailed():
+    //buildPath() A helper for shortestPathsDetailed():
+    //requires: an int variable and a constant int vector passed-by-reference
+    //returns: an int vector
     vector<int> buildPath(int dest, const vector<int>& parent) {
         vector<int> path;
         //adding the cities that in the path to the path:
@@ -139,6 +141,8 @@ public:
     }
 
     //shortestPathsDetailed(): It uses the Dijkstra algorithm to create a pair of vectors that contains a vector path to each city:
+    //requires: an int variable
+    //returns: a pair of int vectors
     pair<vector<int>, vector<int>> shortestPathsDetailed(int start) {
         vector<int> dist(SIZE, INT_MAX);
         vector<int> parent(SIZE, -1);
@@ -158,7 +162,7 @@ public:
             for (auto &edge : adjList[node]) {
                 int next = edge.first;
                 int weight = edge.second;
-
+                //if the shortest distance to and weight of the current node is less than the shortest distance to the next node
                 if (dist[node] + weight < dist[next]) {
                     dist[next] = dist[node] + weight;
                     parent[next] = node;
