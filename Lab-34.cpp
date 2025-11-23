@@ -44,7 +44,9 @@ public:
 
     }
 
-    //Using BFS to create a list of how many roads someone would have to travel to get to a city from a point:
+    //BFS_levels(): Using BFS to create a list of how many roads someone would have to travel to get to a city from a point:
+    //requires: an int variable
+    //returns: a vector of int vectors
     vector<vector<int>> BFS_levels(int start){
         //creating a vector to keep track of which nodes have already been visted:
         vector<bool> visited (SIZE, false); 
@@ -87,7 +89,9 @@ public:
     }
 
 
-    //A helper: Using DFS to find all paths that link two cities:
+    //DFS_allPaths() A helper: Using DFS to find all paths that link two cities:
+    //requires: two int variables, two int vector passed by reference, and a vector of int vectors passed by reference
+    //returns: nothing
     void DFS_allPaths(int current, int dest, vector<bool>& visited, vector<int>& path, vector<vector<int>>& allPaths){
         //creating a vector to keep track of which nodes have already been visted:
         
@@ -98,11 +102,11 @@ public:
         visited[current] = true;
         path.push_back(current);
 
-        if(current == dest){
+        if(current == dest){//if the current node is the destination node:
             allPaths.push_back(path);
         }
-        else {
-            for(auto& p : adjList[current]){
+        else {//if not
+            for(auto& p : adjList[current]){// for each entry in the current node
                 int next = p.first;
                 if(!visited[next]){
                     DFS_allPaths(next, dest, visited, path, allPaths);
@@ -115,7 +119,9 @@ public:
         visited[current] = false;
        
     }
-    //A base function to get a vector containing all the paths from city A to B:
+    //getAllPaths(): A function to get a vector containing all the paths from city A to B:
+    //requires: two int variables
+    //returns: a vector of int vectors
     vector<vector<int>> getAllPaths(int start, int dest){
         vector<bool> visited(SIZE, false);
         vector<int> path;
@@ -451,7 +457,7 @@ int main() {
                 //Using a for iterator loop to display each distinct edge:
                 for (auto &e : mst) {
                     cout << e.src << " --(" << e.weight << " miles)-- " << e.dest << endl;
-                    count += e.weight;
+                    count += e.weight; //increasing the count(total miles) by the current weight (length of an edge)
                 }
 
                 cout << "Total miles of MST: " << count << "\n";
